@@ -1,0 +1,8 @@
+qqbot-share/
+checks/
+ci/
+__pycache__/
+*.log
+ci-answers.json
+sync_checks.py
+test_share.py

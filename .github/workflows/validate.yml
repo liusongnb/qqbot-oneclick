@@ -1,0 +1,22 @@
+name: Share distribution checks
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: tar -xzf qqbot-share-1.12.0-share.1.tar.gz && tar -xzf verification.tar.gz
+      - run: python -m pip install aiohttp PyYAML Pillow
+      - run: python -B sync_checks.py && python -B checks/run_tests.py > regression.log 2>&1
+      - if: always()
+        run: tail -n 18 regression.log || true
+      - run: python -B test_share.py
+      - run: bash -n qqbot-share/install.sh qqbot-share/scripts/qqbotctl
+      - run: python -B ci/smoke.py

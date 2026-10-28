@@ -22,4 +22,4 @@ jobs:
         run: cat regression.log
       - run: python -B test_share.py
       - run: bash -n qqbot-share/install.sh qqbot-share/scripts/qqbotctl
-      - run: python -B ci/smoke.py
+      - run: sudo "$(command -v python)" -B ci/smoke.py
